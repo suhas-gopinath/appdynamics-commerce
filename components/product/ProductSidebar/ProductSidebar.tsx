@@ -3,12 +3,14 @@ import { useAddItem } from '@framework/cart'
 import { FC, useEffect, useState } from 'react'
 import { ProductOptions } from '@components/product'
 import type { Product } from '@commerce/types/product'
+import Modal from './Modal'
 import { Button, Text, Rating, Collapse, useUI } from '@components/ui'
 import {
   getProductVariant,
   selectDefaultOptionFromProduct,
   SelectedOptions,
 } from '../helpers'
+
 
 interface ProductSidebarProps {
   product: Product
@@ -20,7 +22,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   const { openSidebar } = useUI()
   const [loading, setLoading] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({})
-
+  const [isOpen, setIsOpen] = useState (false);
   useEffect(() => {
     selectDefaultOptionFromProduct(product, setSelectedOptions)
   }, [product])
@@ -81,6 +83,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
           drop ends. Reminder: Bad Boys For Life. Shipping may take 10+ days due
           to COVID-19.
         </Collapse>
+        <button onClick={() => setIsOpen(true)}> Buy now</button>
+        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+          <form>
+            Phone Number <br />
+            <input type="text" id="number" name="number" /> <br />
+            Address <br />
+            <input type="text" id="address" name="address" /> <br />
+          </form>
+        </Modal>
       </div>
     </div>
   )
